@@ -1,0 +1,575 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans,'Segoe UI',Arial,sans-serif);background:var(--color-background-tertiary);color:var(--color-text-primary)}
+.app{max-width:700px;margin:0 auto;padding:0 0 3rem}
+.hero{background:linear-gradient(135deg,#0D2137 0%,#1A237E 55%,#880E4F 100%);color:#fff;padding:2.5rem 2rem 2rem;border-radius:0 0 var(--border-radius-xl) var(--border-radius-xl);margin-bottom:2rem}
+.hero-badge{font-size:11px;letter-spacing:1.5px;opacity:.7;text-transform:uppercase;margin-bottom:.75rem}
+.hero h1{font-size:22px;font-weight:500;line-height:1.35;margin-bottom:.5rem}
+.hero-sub{font-size:14px;opacity:.8;margin-bottom:1.25rem;line-height:1.6}
+.hero-tag{display:inline-block;background:rgba(230,126,34,.25);border:1px solid rgba(230,126,34,.5);color:#FFB347;padding:3px 10px;border-radius:20px;font-size:11px;margin:2px 3px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:1.25rem}
+.stat-box{background:rgba(255,255,255,.1);border-radius:var(--border-radius-md);padding:.75rem;text-align:center}
+.stat-num{font-size:22px;font-weight:500;color:#FFB347}
+.stat-lbl{font-size:11px;opacity:.7;margin-top:2px;line-height:1.3}
+.nav{display:flex;gap:6px;flex-wrap:wrap;padding:0 1rem;margin-bottom:1.5rem}
+.nav-btn{font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;transition:all .15s;font-family:inherit}
+.nav-btn:hover,.nav-btn.active{background:#0D2137;color:#fff;border-color:#0D2137}
+.sec{display:none;padding:0 1rem}
+.sec.show{display:block}
+.sec-title{font-size:18px;font-weight:500;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:10px;margin-bottom:1.5rem}
+.cap-card{border-radius:var(--border-radius-lg);padding:1rem;cursor:pointer;transition:transform .15s;border:0.5px solid transparent}
+.cap-card:hover{transform:translateY(-2px)}
+.cap-icon{font-size:24px;margin-bottom:.5rem}
+.cap-name{font-size:13px;font-weight:500;margin-bottom:.25rem}
+.cap-job{font-size:11px;opacity:.75}
+.detail-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-top:1rem;display:none}
+.detail-box.show{display:block}
+.detail-box h3{font-size:15px;font-weight:500;margin-bottom:.75rem}
+.detail-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:.75rem}
+.detail-cell{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.75rem}
+.detail-cell .lbl{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+.detail-cell .val{font-size:13px;font-weight:500}
+.job-list{list-style:none}
+.job-list li{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px}
+.job-list li:last-child{border:none}
+.job-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.salary{font-size:11px;color:var(--color-text-secondary);margin-left:auto}
+.route-steps{display:flex;gap:6px;margin-top:.5rem;flex-wrap:wrap}
+.route-step{background:var(--color-background-info);color:var(--color-text-info);font-size:11px;padding:3px 8px;border-radius:10px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
+.card h3{font-size:15px;font-weight:500;margin-bottom:.5rem}
+.card p{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.pill{display:inline-block;font-size:11px;padding:3px 8px;border-radius:10px;margin:2px}
+.etapa-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:.75rem 0}
+.etapa{border-radius:var(--border-radius-md);padding:.75rem;text-align:center}
+.etapa .age{font-size:11px;opacity:.75;margin-bottom:4px}
+.etapa .label{font-size:12px;font-weight:500;margin-bottom:.25rem}
+.etapa .acts{font-size:11px;opacity:.8;line-height:1.5}
+.gene-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+.gene-card{border-radius:var(--border-radius-md);padding:.75rem}
+.gene-card .gname{font-size:12px;font-weight:500;margin-bottom:3px}
+.gene-card .gfun{font-size:11px;opacity:.8;line-height:1.4}
+.progress-bar{height:6px;border-radius:3px;margin:4px 0}
+.companies{display:flex;flex-wrap:wrap;gap:6px;margin-top:.75rem}
+.company{font-size:11px;padding:4px 10px;border-radius:10px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary)}
+.co-badge{background:var(--color-background-success);color:var(--color-text-success);font-size:10px;padding:1px 6px;border-radius:8px;margin-left:4px}
+.glos-search{width:100%;margin-bottom:1rem;padding:8px 12px;font-size:14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit}
+.glos-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.glos-item:hover{border-color:var(--color-border-secondary)}
+.glos-item .gi-term{font-size:13px;font-weight:500}
+.glos-item .gi-tipo{font-size:10px;padding:2px 7px;border-radius:8px;float:right}
+.glos-item .gi-def{font-size:12px;color:var(--color-text-secondary);margin-top:4px;display:none;line-height:1.5}
+.glos-item.open .gi-def{display:block}
+.guia-tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.guia-tab{font-size:12px;padding:5px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit;transition:all .15s}
+.guia-tab:hover,.guia-tab.active{background:var(--color-background-secondary)}
+.ejercicio{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.85rem;margin-bottom:8px}
+.ejercicio .ej-title{font-size:13px;font-weight:500;margin-bottom:4px}
+.ejercicio .ej-body{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.share-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.5rem;text-align:center;margin-top:1rem}
+.share-box h3{font-size:15px;font-weight:500;margin-bottom:.5rem}
+.share-box p{font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem;line-height:1.5}
+.share-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.share-btn{font-size:12px;padding:7px 16px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .15s}
+.share-btn:hover{background:var(--color-background-secondary)}
+.cta-box{background:#0D2137;color:#fff;border-radius:var(--border-radius-xl);padding:2rem;text-align:center;margin-top:2rem}
+.cta-box h3{font-size:18px;font-weight:500;margin-bottom:.5rem}
+.cta-box p{font-size:13px;opacity:.8;margin-bottom:1.25rem;line-height:1.6}
+.cta-btn{background:#E67E22;color:#fff;border:none;padding:.75rem 2rem;border-radius:var(--border-radius-md);font-size:14px;cursor:pointer;font-weight:500;font-family:inherit;transition:opacity .15s}
+.cta-btn:hover{opacity:.85}
+.author{text-align:center;font-size:11px;color:var(--color-text-tertiary);margin-top:1.5rem;padding:0 1rem}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:.75rem}
+.chip{font-size:11px;padding:3px 9px;border-radius:10px;background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.sev-badge{font-size:11px;padding:2px 8px;border-radius:8px;background:var(--color-background-danger);color:var(--color-text-danger)}
+.hidden{display:none}
+</style>
+
+<h2 class="sr-only">Aplicación web: Construir empleos desde la infancia — Neurodivergencia e Inteligencia Artificial</h2>
+
+<div class="app">
+
+<div class="hero">
+  <div class="hero-badge">Colombia · Mayo 2026</div>
+  <h1>Construir empleos y trabajos desde la infancia, para encontrar, acceder y mantener empleos en la vida adulta</h1>
+  <div class="hero-sub">Para madres, padres, profesores, formadores y cuidadores de personas neurodivergentes. No es solo pensarlo. Se debe <strong>hacer</strong>.</div>
+  <div>
+    <span class="hero-tag">Autismo</span>
+    <span class="hero-tag">TDAH</span>
+    <span class="hero-tag">5 Capacidades</span>
+    <span class="hero-tag">25 Empleos en IA</span>
+    <span class="hero-tag">Infancia → Empleo</span>
+  </div>
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-num">85%</div><div class="stat-lbl">adultos autistas desempleados</div></div>
+    <div class="stat-box"><div class="stat-num">170M</div><div class="stat-lbl">nuevos empleos en IA para 2030</div></div>
+    <div class="stat-box"><div class="stat-num">0</div><div class="stat-lbl">años para esperar. Empieza hoy</div></div>
+  </div>
+</div>
+
+<nav class="nav" role="navigation">
+  <button class="nav-btn active" onclick="showSec('capacidades',this)">5 Capacidades</button>
+  <button class="nav-btn" onclick="showSec('empleos',this)">25 Empleos IA</button>
+  <button class="nav-btn" onclick="showSec('biologia',this)">Biología</button>
+  <button class="nav-btn" onclick="showSec('modelo',this)">Modelo</button>
+  <button class="nav-btn" onclick="showSec('guias',this)">Guías</button>
+  <button class="nav-btn" onclick="showSec('glosario',this)">Glosario</button>
+  <button class="nav-btn" onclick="showSec('compartir',this)">Compartir</button>
+</nav>
+
+<!-- SEC 1: CAPACIDADES -->
+<section class="sec show" id="sec-capacidades">
+  <div class="sec-title">Las 5 Capacidades Neurodivergentes de Alto Valor</div>
+  <div class="cap-grid" id="cap-grid"></div>
+  <div class="detail-box" id="cap-detail"></div>
+  <div class="card">
+    <h3>¿Por qué estas 5 capacidades?</h3>
+    <p>Son las más frecuentes en cerebros neurodivergentes Y las más demandadas por la economía de la IA. Cada una tiene base genética verificable, mecanismo sináptico específico y conexión directa con empleos de USD 80k–1M+ anuales.</p>
+    <div class="chips">
+      <span class="chip">CHD8 → Hipersistematización</span>
+      <span class="chip">DRD4 → Hiperfoco</span>
+      <span class="chip">NRXN1 → Patrones</span>
+      <span class="chip">CNTNAP2 → Precisión</span>
+      <span class="chip">PTEN → Multifoco</span>
+    </div>
+  </div>
+</section>
+
+<!-- SEC 2: EMPLEOS -->
+<section class="sec" id="sec-empleos">
+  <div class="sec-title">Los 25 Empleos en IA para Perfiles Neurodivergentes</div>
+  <div id="empleos-container"></div>
+  <div class="card">
+    <h3>Empresas con programas formales de neuroinclusion</h3>
+    <div class="companies" id="companies-list"></div>
+  </div>
+  <div class="card">
+    <h3>Rutas de acceso sin título universitario</h3>
+    <div class="chips">
+      <span class="chip">Kaggle — competencias</span>
+      <span class="chip">GitHub — portfolio</span>
+      <span class="chip">Open Source — contribuciones</span>
+      <span class="chip">fast.ai — gratuito</span>
+      <span class="chip">Elements of AI</span>
+      <span class="chip">Platzi gratuito</span>
+    </div>
+  </div>
+</section>
+
+<!-- SEC 3: BIOLOGÍA -->
+<section class="sec" id="sec-biologia">
+  <div class="sec-title">Cómo Nacen las 5 Capacidades — Del Gen al Talento</div>
+  <div class="card">
+    <h3>La cascada biológica en 7 pasos</h3>
+    <div id="cascade"></div>
+  </div>
+  <div class="card">
+    <h3>Genes directos del autismo y el TDAH</h3>
+    <div class="gene-grid" id="genes"></div>
+  </div>
+  <div class="card">
+    <h3>Epigenética: el ambiente que modifica los genes</h3>
+    <p>El ambiente pedagógico que los padres construyen modifica literalmente la expresión génica del cerebro del niño — no metafóricamente: a través de acetilación de histonas, metilación del DNA y síntesis de BDNF.</p>
+    <div style="margin-top:.75rem">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--color-background-success);border:1px solid var(--color-border-success);flex-shrink:0"></div>
+        <span style="color:var(--color-text-success);font-weight:500">ACTIVA:</span>
+        <span style="color:var(--color-text-secondary)">hiperfoco protegido, juego deliberado, complejidad progresiva, sueño reparador</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--color-background-danger);border:1px solid var(--color-border-danger);flex-shrink:0"></div>
+        <span style="color:var(--color-text-danger);font-weight:500">SUPRIME:</span>
+        <span style="color:var(--color-text-secondary)">estrés crónico, privación de sueño, ambiente de rechazo, privación estimular</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC 4: MODELO -->
+<section class="sec" id="sec-modelo">
+  <div class="sec-title">Modelo Pedagógico Familiar</div>
+  <div class="card">
+    <h3>Los 6 principios del modelo</h3>
+    <div id="principios"></div>
+  </div>
+  <div class="card">
+    <h3>La ruta de tres etapas</h3>
+    <div class="etapa-row">
+      <div class="etapa" style="background:#1565C0;color:#fff">
+        <div class="age">2–12 años</div>
+        <div class="label">INFANCIA</div>
+        <div class="acts">LEGO · Scratch · Clasificar · Hiperfoco protegido · 1eras 1.000 horas</div>
+      </div>
+      <div class="etapa" style="background:#4A148C;color:#fff">
+        <div class="age">12–18 años</div>
+        <div class="label">ADOLESCENCIA</div>
+        <div class="acts">Python · GitHub · Hackathons · Proyecto 12 meses · Portfolio</div>
+      </div>
+      <div class="etapa" style="background:#1B5E20;color:#fff">
+        <div class="age">18+ años</div>
+        <div class="label">VIDA ADULTA</div>
+        <div class="acts">Empleo en IA · Investigación · Consultoría · Emprendimiento</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-top:.5rem">El empleo adulto de una persona neurodivergente se construye en los primeros 12 años de vida. No en los últimos.</p>
+  </div>
+  <div class="card">
+    <h3>Los 10 errores más costosos</h3>
+    <div id="errores"></div>
+  </div>
+</section>
+
+<!-- SEC 5: GUÍAS -->
+<section class="sec" id="sec-guias">
+  <div class="sec-title">Guías para Fortalecer las 5 Capacidades</div>
+  <div class="guia-tabs" id="guia-tabs"></div>
+  <div id="guia-content"></div>
+</section>
+
+<!-- SEC 6: GLOSARIO -->
+<section class="sec" id="sec-glosario">
+  <div class="sec-title">Glosario Neurodiversidad 2.0 — 125 Términos</div>
+  <input class="glos-search" type="text" placeholder="Buscar término..." id="glos-input" oninput="filterGlos(this.value)">
+  <div id="glos-list"></div>
+</section>
+
+<!-- SEC 7: COMPARTIR -->
+<section class="sec" id="sec-compartir">
+  <div class="sec-title">Compartir esta Aplicación</div>
+  <div class="share-box">
+    <h3>Comparte el conocimiento con familias que lo necesitan</h3>
+    <p>Esta aplicación reúne 5 documentos científicos y pedagógicos, 125 términos del glosario, 25 empleos en IA verificados, el modelo pedagógico completo y las guías prácticas para familias neurodivergentes. Todo gratuito. Todo en español.</p>
+    <div class="share-btns">
+      <button class="share-btn" onclick="shareWA()"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>WhatsApp</button>
+      <button class="share-btn" onclick="shareTW()"><i class="ti ti-brand-twitter" aria-hidden="true"></i>Twitter/X</button>
+      <button class="share-btn" onclick="shareLI()"><i class="ti ti-brand-linkedin" aria-hidden="true"></i>LinkedIn</button>
+      <button class="share-btn" onclick="shareFB()"><i class="ti ti-brand-facebook" aria-hidden="true"></i>Facebook</button>
+      <button class="share-btn" onclick="copyLink()"><i class="ti ti-copy" aria-hidden="true"></i>Copiar enlace</button>
+    </div>
+    <p id="copy-confirm" style="font-size:12px;color:var(--color-text-success);margin-top:.75rem;display:none">¡Enlace copiado al portapapeles!</p>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <h3>Mensajes para compartir</h3>
+    <div id="share-msgs"></div>
+  </div>
+  <div class="card">
+    <h3>Hashtags oficiales de la campaña</h3>
+    <div class="chips">
+      <span class="chip">#MiHijoPuede</span>
+      <span class="chip">#NeurodivergenciaIA</span>
+      <span class="chip">#TalentoNeurodivergente</span>
+      <span class="chip">#DesdelaInfancia</span>
+      <span class="chip">#EmpleoNeurodivergente</span>
+      <span class="chip">#ElEmpleoEmpiezaHoy</span>
+      <span class="chip">#LaIATeEspera</span>
+      <span class="chip">#NeuroPotenciaIA</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-box">
+  <h3>No es solo pensarlo. Se debe HACER.</h3>
+  <p>Sus hijos van a crecer. Se convertirán en adultos. Van a necesitar trabajo. El momento de construir ese camino es ahora — semana a semana, desde la infancia.</p>
+  <button class="cta-btn" onclick="sendPrompt('Quiero empezar a aplicar el modelo pedagógico con mi hijo/a neurodivergente. ¿Por dónde empiezo esta semana?')">Empezar esta semana ↗</button>
+</div>
+
+<div class="author">
+  Autor: Uldarico Ramírez Perdomo · Ingeniero Forestal · Msc Desarrollo Educativo y Social<br>
+  Más de 20 años acompañando familias neurodivergentes · Colombia, 2026<br>
+  #MiHijoPuede
+</div>
+
+</div>
+
+<script>
+const CAPS=[
+  {id:'hiper',icon:'⚙',name:'Hipersistematización',color:'#0277BD',bg:'#E1F5FE',gen:'CHD8 · SHANK3',job:'AI Systems Architect',jobs:['AI Systems Architect','Data Engineer','MLOps Engineer','Prompt Engineer Senior','AI Compliance Specialist'],salaries:['$150k–300k','$110k–200k','$130k–250k','$80k–200k','$100k–180k'],infancia:'LEGO libre · Scratch Jr · El Gran Catálogo · Diseñar reglas de juego',adolescencia:'Python + SQL · APIs · Pipeline de datos completo · GitHub activo',empresa:'SAP Autism at Work · Databricks · AWS',def:'Analizar cualquier fenómeno como un sistema con reglas, entradas, salidas y componentes interdependientes.'},
+  {id:'patron',icon:'🔍',name:'Identificación de Patrones',color:'#2E7D32',bg:'#E8F5E9',gen:'NRXN1 · SYNGAP1',job:'Data Scientist',jobs:['Data Scientist','ML Researcher','NLP Engineer','Anomaly Detection Specialist','Geospatial AI Analyst'],salaries:['$120k–220k','$180k–400k','$130k–240k','$120k–200k','$90k–160k'],infancia:'Secuencias de colores · Ajedrez · Estadísticas del tema favorito · Detective',adolescencia:'EDA en Python · scikit-learn · Kaggle · Primer modelo predictivo',empresa:'Meta AI · Google · Hugging Face',def:'Detectar regularidades estadísticas, estructurales o conceptuales en entornos de alta complejidad que otros no perciben.'},
+  {id:'preci',icon:'🎯',name:'Precisión en los Detalles',color:'#4A148C',bg:'#F3E5F5',gen:'CNTNAP2 · SNAP25',job:'AI QA Engineer',jobs:['AI QA Engineer','LLM Evaluator','AI Red Teamer','AI Bias Auditor','Technical Writer AI'],salaries:['$100k–180k','$90k–180k','$130k–250k','$110k–200k','$80k–160k'],infancia:'Buscar los 7 errores · Revisar textos · Checklists propios · Inspector de calidad',adolescencia:'Testing con pytest · Evaluación de LLMs · Auditoría de sesgos · Giskard',empresa:'Anthropic · Scale AI · Microsoft',def:'Percibir y corregir errores con exactitud extraordinaria en sistemas, datos o textos que otros no detectan.'},
+  {id:'multi',icon:'🔀',name:'Multifoco',color:'#E65100',bg:'#FFF3E0',gen:'DRD4 · SLC6A3',job:'AI Product Manager',jobs:['AI Product Manager','AI Innovation Lead','Digital Transformation Consultant','AI UX Designer','Chief AI Officer (CAIO)'],salaries:['$150k–300k','$130k–250k','$120k–220k','$110k–200k','$250k–500k'],infancia:'Tablero de proyectos activos · Mapas mentales · 4 proyectos simultáneos',adolescencia:'Hackathon 48h · Portfolio interdisciplinar · Proyectos que cruzan dominios',empresa:'McKinsey QuantumBlack · Microsoft · Accenture',def:'Procesar múltiples proyectos y flujos de información simultáneamente, conectando dominios distintos de forma espontánea.'},
+  {id:'hifoco',icon:'🔥',name:'Hiperfoco',color:'#880E4F',bg:'#FCE4EC',gen:'PTEN · NRXN1',job:'AI Researcher',jobs:['AI Research Scientist','Foundation Model Developer','AI Security Expert','Robotics & Embodied AI Eng.','Quantitative AI Researcher'],salaries:['$200k–500k','$300k–1M+','$150k–350k','$130k–280k','$200k–1M+'],infancia:'Diario del hiperfoco · Proteger los ciclos · Ampliar complejidad del tema',adolescencia:'Proyecto de 12 meses · Técnica Feynman · Primer PR en open source',empresa:'Anthropic · OpenAI · DeepMind · Two Sigma',def:'Concentración extraordinaria durante horas en el dominio de interés, produciendo expertise de alta profundidad.'},
+];
+
+const COMPANIES=[
+  {name:'SAP',badge:'desde 2013',url:'sap.com'},
+  {name:'Microsoft',badge:'Autism Hiring',url:'microsoft.com'},
+  {name:'Amazon',badge:'Neurodiversity@',url:'amazon.com'},
+  {name:'Google DeepMind',badge:'Neuroinclusion',url:'deepmind.google'},
+  {name:'Anthropic',badge:'IA Safety',url:'anthropic.com'},
+  {name:'JP Morgan',badge:'Neurodiversity',url:'jpmorgan.com'},
+  {name:'Deloitte',badge:'ND Programme',url:'deloitte.com'},
+  {name:'EY',badge:'ND CoE',url:'ey.com'},
+  {name:'Rappi 🇨🇴',badge:'Bogotá',url:'rappi.com'},
+  {name:'Bancolombia 🇨🇴',badge:'AI Lab',url:'bancolombia.com'},
+];
+
+const PRINCIPIOS=[
+  {n:'1',t:'El interés como portal',d:'Nunca empieza por donde el padre quiere llegar. Siempre por donde el niño ya está.'},
+  {n:'2',t:'Complejidad progresiva',d:'Siempre listo el siguiente escalón de dificultad. Nunca dejar el cerebro en el nivel cómodo.'},
+  {n:'3',t:'Tiempo protegido',d:'45–90 minutos de trabajo no interrumpido. El hiperfoco no se interrumpe sin aviso previo.'},
+  {n:'4',t:'Documentar y celebrar',d:'El proceso tiene valor propio. Fotografiar los sistemas inventados es construir el portfolio del mañana.'},
+  {n:'5',t:'Equilibrio digital-físico',d:'Los juegos físicos y digitales son complementarios. Ambos activan el hiperfoco.'},
+  {n:'6',t:'Conexión emocional primero',d:'Sin seguridad afectiva, no hay aprendizaje real. El vínculo es la base de todo el modelo.'},
+];
+
+const ERRORES=[
+  'Forzar el foco en lo que no interesa → Usar el interés actual como puerta de entrada',
+  'Interrumpir el hiperfoco abruptamente → Avisar 10 minutos antes, respetar el ciclo',
+  'Comparar con pares neurotípicos → Comparar al niño con su versión de hace 6 meses',
+  'Prohibir videojuegos sin evaluar la complejidad → Evaluar y usar como ruta a la programación',
+  'No documentar los avances → Construir el portfolio desde los primeros años',
+  'Delegar la formación tecnológica al colegio → Construirla en casa desde los 5 años',
+  'No hablar de la neurodivergencia con el niño → Explicar en términos de fortalezas',
+  'Exigir terminar todos los proyectos → Valorar el proceso y no solo el producto',
+];
+
+const GUIAS=[
+  {id:'g1',name:'⚙ Guía 1',cap:'Hipersistematización',color:'#0277BD',meta:'AI Architect · Data Engineer',ej:[
+    {t:'El Gran Catálogo del Mundo',b:'50 objetos del hogar · El niño organiza SIN instrucción · Fotografiar el sistema · Preguntar la regla · Semana siguiente: añadir criterio nuevo. Señal de avance: predice en qué categoría irá un objeto nuevo.'},
+    {t:'El Arquitecto de Reglas',b:'Inventar un juego con reglas escritas propias. Señal: puede explicar el sistema y defenderlo lógicamente.'},
+    {t:'Scratch: Mi Primer Sistema Interactivo',b:'scratch.mit.edu (gratuito) · Primer proyecto interactivo propio. Señal: puede reproducirlo siguiendo la documentación.'},
+  ]},
+  {id:'g2',name:'🔍 Guía 2',cap:'Identificación de Patrones',color:'#2E7D32',meta:'Data Scientist · ML Researcher',ej:[
+    {t:'Detective de Secuencias',b:'Secuencias de 1 → 2 → 3 atributos simultáneos. Señal: diseña su propio patrón para que el adulto lo complete.'},
+    {t:'Estadísticas del Tema Favorito',b:'Recopilar datos del tema de hiperfoco y graficarlos. Señal: puede hacer predicciones a partir de los datos.'},
+    {t:'El Espía del Lenguaje',b:'Contar frecuencia de palabras en textos. Señal: detecta patrones que el adulto no había notado.'},
+  ]},
+  {id:'g3',name:'🎯 Guía 3',cap:'Precisión en los Detalles',color:'#4A148C',meta:'AI QA · LLM Evaluator · Red Teamer',ej:[
+    {t:'Inspector de Calidad',b:'Textos con 7 errores deliberados. Señal: justifica cada corrección, no solo señala.'},
+    {t:'Mi Primer Checklist de Calidad',b:'Diseñar el propio checklist antes de "entregar" cualquier producto. Señal: detecta errores antes que el adulto.'},
+    {t:'Corrector de Código Scratch',b:'Código con bugs deliberados. Señal: puede describir el tipo de error y proponer solución.'},
+  ]},
+  {id:'g4',name:'🔀 Guía 4',cap:'Multifoco',color:'#E65100',meta:'AI Product Manager · CAIO',ej:[
+    {t:'El Tablero de Proyectos Activos',b:'Pared visible con proyectos activos. Revisión semanal de 15 minutos. Señal: conecta espontáneamente 2 proyectos distintos.'},
+    {t:'El Puente Creativo',b:'Encontrar 3 similitudes entre 2 proyectos diferentes. Señal: identifica conexiones estructurales que el adulto no ve.'},
+    {t:'Hackathon Personal 48h',b:'Definir un problema el viernes, demo funcional el domingo. Señal: entrega funcional y puede explicar las decisiones.'},
+  ]},
+  {id:'g5',name:'🔥 Guía 5',cap:'Hiperfoco',color:'#880E4F',meta:'AI Researcher · Foundation Model Dev',ej:[
+    {t:'El Diario del Hiperfoco',b:'3 preguntas tras cada episodio: ¿en qué? ¿cuánto tiempo? ¿qué produjiste? Señal: puede predecir cuándo va a entrar en hiperfoco.'},
+    {t:'El Escalón de Complejidad',b:'Identificar el siguiente nivel cuando el actual está dominado. Señal: busca activamente la siguiente dificultad.'},
+    {t:'Proyecto de Especialización 12 Meses',b:'Un proyecto de alta complejidad con hitos mensuales + GitHub + presentación pública. Señal: puede enseñar lo que sabe (Técnica Feynman).'},
+  ]},
+];
+
+const GENES=[
+  {n:'SHANK3',col:'#0277BD',bg:'#E1F5FE',f:'Densidad postsináptica glutamatérgica → Hipersistematización prefrontal'},
+  {n:'CHD8',col:'#0277BD',bg:'#E1F5FE',f:'Remodelador de cromatina → regula cientos de genes de neurodesarrollo'},
+  {n:'NRXN1',col:'#2E7D32',bg:'#E8F5E9',f:'Especificidad sináptica → Identificación de patrones en circuitos sensoriales'},
+  {n:'SYNGAP1',col:'#2E7D32',bg:'#E8F5E9',f:'Plasticidad sináptica LTP → Codificación de patrones en hipocampo'},
+  {n:'DRD4 7R',col:'#E65100',bg:'#FFF3E0',f:'Dopamina baja sensibilidad → Multifoco y búsqueda de novedad (TDAH)'},
+  {n:'DAT1',col:'#E65100',bg:'#FFF3E0',f:'Transportador dopamina → Duración del hiperfoco ante alto interés'},
+  {n:'PTEN',col:'#880E4F',bg:'#FCE4EC',f:'Conectividad de largo alcance → Multifoco entre regiones corticales'},
+  {n:'CNTNAP2',col:'#4A148C',bg:'#F3E5F5',f:'Nodos de Ranvier → velocidad de conducción → precisión temporal'},
+];
+
+const CASCADE=[
+  {n:'1','t':'Gen','d':'CHD8, SHANK3, DRD4 — el plano del cerebro diferente','col':'#0277BD'},
+  {n:'2','t':'Proteína','d':'Componentes sinápticos con características distintas','col':'#1565C0'},
+  {n:'3','t':'Sinapsis','d':'Mayor eficiencia local selectiva — la arquitectura que produce el talento','col':'#1A237E'},
+  {n:'4','t':'Potencial de acción','d':'Señal eléctrica con variabilidad (multifoco) o precisión (hiperfoco) diferente','col':'#2E7D32'},
+  {n:'5','t':'Neurotransmisor','d':'Dopamina, Glutamato, GABA — la química de las 5 capacidades','col':'#4A148C'},
+  {n:'6','t':'Epigenética','d':'El AMBIENTE que modifica cuánto se expresan los genes → ESTO LO CONTROLAN LOS PADRES','col':'#E65100'},
+  {n:'7','t':'Capacidad observable','d':'⚙ 🔍 🎯 🔀 🔥 → Empleo en IA','col':'#880E4F'},
+];
+
+const GLOSARIO=[
+  {t:'Ventaja Comparativa Estructural Neurodivergente',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Diferencia de rendimiento cognitivo estructuralmente integrada en la biología del cerebro neurodivergente — no compensatoria sino natural — en dominios de alta complejidad.'},
+  {t:'Portfolio de Infancia',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Colección documentada de proyectos y competencias demostradas entre los 2 y 12 años, con valor de mercado profesional futuro. El CV más poderoso del mercado de IA.'},
+  {t:'Ambiente Pedagógico como Regulador Epigenético',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'El ambiente que los padres construyen modifica literalmente la expresión génica del cerebro del niño mediante acetilación de histonas y síntesis de BDNF.'},
+  {t:'Hiperfoco Productivo Dirigido',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Estado de concentración extraordinaria en un dominio de alta complejidad, gestionado deliberadamente por el adulto acompañante hacia objetos de mayor valor cognitivo.'},
+  {t:'Señal de Avance Verificable',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Observación conductual específica que indica que el niño alcanzó el objetivo cognitivo del ejercicio, sin calificaciones ni pruebas estandarizadas.'},
+  {t:'Ruta de Empleabilidad Cognitiva',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Trayectoria planificada que conecta la capacidad cognitiva dominante con los roles de empleo de mayor valor en IA, con hitos verificables en cada etapa.'},
+  {t:'Taxonomía Cognitiva del Mercado Laboral',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Clasificación de los empleos de IA basada en la arquitectura cognitiva que requieren, no en sectores económicos convencionales.'},
+  {t:'Sistema de Escaleras Paralelas',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Estructura pedagógica donde las 5 capacidades se desarrollan simultáneamente en escaleras independientes de complejidad creciente, respetando el desarrollo asincrónico neurodivergente.'},
+  {t:'Alta Ganancia Selectiva',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Característica del cerebro neurodivergente por la cual la amplificación de señales es extraordinariamente alta para estímulos de alto interés — la base neurológica del hiperfoco.'},
+  {t:'Deep Work Neurodivergente',tipo:'Nuevo',tc:'#0277BD',tbc:'#E1F5FE',d:'Estado de trabajo cognitivo de alta concentración que en el perfil neurodivergente emerge espontáneamente como hiperfoco en el dominio de interés.'},
+  {t:'Neurodiversity-Affirmative Practice',tipo:'Emergente',tc:'#2E7D32',tbc:'#E8F5E9',d:'Prácticas profesionales que parten del reconocimiento de la neurodiversidad como variación natural del desarrollo humano, no como patología.'},
+  {t:'Neuroinclusion Organizacional',tipo:'Emergente',tc:'#2E7D32',tbc:'#E8F5E9',d:'Políticas organizacionales que diseñan activamente los entornos de trabajo para maximizar la contribución de los empleados neurodivergentes.'},
+  {t:'IA Culturalmente Contextualizada',tipo:'Emergente',tc:'#2E7D32',tbc:'#E8F5E9',d:'Sistemas de IA diseñados para contextos culturales no dominantes — incluyendo lenguas indígenas y sistemas agrícolas de pequeña escala.'},
+  {t:'Sinergia de Capacidades Neurodivergentes',tipo:'Emergente',tc:'#2E7D32',tbc:'#E8F5E9',d:'Fenómeno por el cual la combinación de dos o más capacidades bien desarrolladas produce un nivel de competencia mayor que la suma por separado.'},
+  {t:'Cura vs. Acomodación en Autismo',tipo:'Controversial',tc:'#922B21',tbc:'#FADBD8',d:'Debate entre la investigación de tratamientos para el autismo (modelo médico) y la demanda de la comunidad autista de acomodaciones en el entorno. Este modelo adopta la segunda posición.'},
+  {t:'Sobrediagnóstico de Neurodivergencia',tipo:'Controversial',tc:'#922B21',tbc:'#FADBD8',d:'Hipótesis que propone que las tasas crecientes de diagnóstico reflejan en parte medicalización de variaciones normales. Para este modelo, las capacidades se observan con o sin diagnóstico formal.'},
+  {t:'Enmascaramiento (Masking) Neurodivergente',tipo:'Controversial',tc:'#922B21',tbc:'#FADBD8',d:'Proceso de suprimir las manifestaciones de neurodivergencia para adaptarse al entorno neurotípico. Produce burnout autístico severo a largo plazo.'},
+  {t:'Hiperfoco',tipo:'Clásico Redefinido',tc:'#37474F',tbc:'#ECEFF1',d:'Reencuadre: no es síntoma sino el mecanismo de aprendizaje más poderoso disponible. Cuando opera en dominio de alta complejidad = práctica deliberada en su forma más intensa.'},
+  {t:'Zona de Desarrollo Próximo (ZDP)',tipo:'Clásico Redefinido',tc:'#37474F',tbc:'#ECEFF1',d:'En el perfil neurodivergente, la ZDP es radicalmente asimétrica: extraordinariamente amplia en el dominio de hiperfoco, muy estrecha en dominios de baja motivación.'},
+  {t:'Inclusión Educativa',tipo:'Clásico Redefinido',tc:'#37474F',tbc:'#ECEFF1',d:'Redefinida: la inclusión real no es adaptar al niño al sistema sino construir el sistema correcto para el niño. No integrar al sistema estándar: amplificar las capacidades diferenciadas.'},
+  {t:'Umbral de Neuroplasticidad por Dominio',tipo:'A Investigar',tc:'#6A1B9A',tbc:'#F3E5F5',d:'¿Existe un umbral de horas de práctica deliberada a partir del cual el circuito sináptico del dominio de especialización está suficientemente consolidado para ser irreversible?'},
+  {t:'Métricas de Impacto a Largo Plazo',tipo:'A Investigar',tc:'#6A1B9A',tbc:'#F3E5F5',d:'¿Las personas neurodivergentes cuyas familias aplicaron el modelo pedagógico tienen tasas de empleo significativamente superiores medidas a los 22, 25 y 30 años?'},
+  {t:'IA para Detección Temprana de Capacidades',tipo:'A Investigar',tc:'#6A1B9A',tbc:'#F3E5F5',d:'¿Puede un modelo de visión por computadora identificar señales de hipersistematización y otras capacidades en videos del juego infantil para orientar el diseño pedagógico temprano?'},
+  {t:'La Pregunta Final: ¿Cambiamos el 85%?',tipo:'A Investigar',tc:'#6A1B9A',tbc:'#F3E5F5',d:'¿El sistema integrado de 5 documentos es suficiente para reducir significativamente el 85% de desempleo neurodivergente adulto en Colombia en los próximos 15–20 años?'},
+  {t:'Impacto de la IA Generativa en el Desarrollo Cognitivo',tipo:'A Investigar',tc:'#6A1B9A',tbc:'#F3E5F5',d:'¿El uso de ChatGPT, Copilot y otras herramientas generativas por niños neurodivergentes de 8–14 años amplifica o reduce el desarrollo de las capacidades cognitivas clave?'},
+];
+
+const SHARE_MSGS=[
+  {red:'WhatsApp',msg:'🧠⚡ Si tienes un hijo o hija neurodivergente, esto puede cambiar su futuro:\n\nEl 85% de adultos autistas están desempleados. No por falta de talento. Porque nadie construyó el camino desde la infancia.\n\nEsta aplicación gratuita tiene el mapa completo: 5 capacidades, 25 empleos en IA, el modelo pedagógico y las guías prácticas.\n\nNo es solo pensarlo. Se debe HACER. #MiHijoPuede'},
+  {red:'LinkedIn',msg:'El 85% de adultos autistas están desempleados. Las empresas de IA más avanzadas del mundo (SAP, Microsoft, Anthropic, Google DeepMind) tienen programas formales para contratar talento neurodivergente.\n\nHe construido una aplicación gratuita con el sistema completo para que las familias empiecen a preparar ese camino desde la infancia:\n→ Las 5 capacidades neurodivergentes y sus empleos directos en IA\n→ La base genética y neurobiológica verificada\n→ El modelo pedagógico familiar paso a paso\n→ Las guías con ejercicios para esta semana\n→ El glosario completo de 125 términos\n\n#TalentoNeurodivergente #Neurodiversidad #IA #Inclusion'},
+  {red:'Twitter/X',msg:'El cerebro de tu hijo con autismo o TDAH tiene 5 superpoderes que el mercado de la IA paga muy bien.\n\nNo es magia. Es neurobiología verificada.\n\nHe documentado el mapa completo del gen al empleo. Gratis. En español.\n\n#MiHijoPuede #NeurodivergenciaIA'},
+];
+
+let activeGuid=0, activeCap=null;
+
+function showSec(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('show'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('show');
+  btn.classList.add('active');
+}
+
+function buildCaps(){
+  const grid=document.getElementById('cap-grid');
+  grid.innerHTML=CAPS.map((c,i)=>`
+    <div class="cap-card" style="background:${c.bg};border-color:${c.color}20" onclick="showCapDetail(${i})">
+      <div class="cap-icon">${c.icon}</div>
+      <div class="cap-name" style="color:${c.color}">${c.name}</div>
+      <div class="cap-job" style="color:${c.color}">${c.job}</div>
+    </div>`).join('');
+}
+
+function showCapDetail(i){
+  const c=CAPS[i], det=document.getElementById('cap-detail');
+  if(activeCap===i){det.classList.remove('show');activeCap=null;return;}
+  activeCap=i;
+  det.innerHTML=`
+    <h3 style="color:${c.color}">${c.icon} ${c.name}</h3>
+    <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:.75rem">${c.def}</p>
+    <div class="detail-row">
+      <div class="detail-cell"><div class="lbl">Base genética</div><div class="val" style="font-size:12px">${c.gen}</div></div>
+      <div class="detail-cell"><div class="lbl">Empleo destacado</div><div class="val" style="color:${c.color}">${c.job}</div></div>
+    </div>
+    <div style="font-size:12px;font-weight:500;margin-bottom:6px;color:var(--color-text-secondary)">Los 5 empleos en IA</div>
+    <ul class="job-list">${c.jobs.map((j,k)=>`<li><div class="job-dot" style="background:${c.color}"></div>${j}<span class="salary">${c.salaries[k]}</span></li>`).join('')}</ul>
+    <div style="font-size:12px;font-weight:500;margin:10px 0 6px;color:var(--color-text-secondary)">Ruta pedagógica</div>
+    <div class="route-steps">
+      <span class="route-step">Infancia: ${c.infancia}</span>
+      <span class="route-step">Adolescencia: ${c.adolescencia}</span>
+    </div>`;
+  det.classList.add('show');
+}
+
+function buildEmpleos(){
+  const cont=document.getElementById('empleos-container');
+  cont.innerHTML=CAPS.map(c=>`
+    <div class="card" style="border-left:3px solid ${c.color}">
+      <h3 style="color:${c.color}">${c.icon} ${c.name}</h3>
+      <ul class="job-list">${c.jobs.map((j,k)=>`<li>
+        <div class="job-dot" style="background:${c.color}"></div>
+        <div><div style="font-weight:500;font-size:13px">${j}</div></div>
+        <span class="salary">${c.salaries[k]}</span>
+      </li>`).join('')}</ul>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-top:.5rem">Empresa ejemplo: ${c.empresa}</div>
+    </div>`).join('');
+  document.getElementById('companies-list').innerHTML=COMPANIES.map(c=>`
+    <div class="company">${c.name}<span class="co-badge">${c.badge}</span></div>`).join('');
+}
+
+function buildBiologia(){
+  const cas=document.getElementById('cascade');
+  cas.innerHTML=CASCADE.map(s=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+      <div style="min-width:24px;height:24px;border-radius:50%;background:${s.col};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff;flex-shrink:0">${s.n}</div>
+      <div>
+        <div style="font-size:13px;font-weight:500;color:${s.col}">${s.t}</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">${s.d}</div>
+      </div>
+    </div>
+    ${s.n<'7'?`<div style="margin-left:12px;margin-bottom:4px;color:var(--color-text-tertiary);font-size:16px">↓</div>`:''}`).join('');
+  document.getElementById('genes').innerHTML=GENES.map(g=>`
+    <div class="gene-card" style="background:${g.bg};border:0.5px solid ${g.col}40">
+      <div class="gname" style="color:${g.col}">${g.n}</div>
+      <div class="gfun" style="color:${g.col}">${g.f}</div>
+    </div>`).join('');
+}
+
+function buildModelo(){
+  document.getElementById('principios').innerHTML=PRINCIPIOS.map(p=>`
+    <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
+      <div style="min-width:22px;height:22px;border-radius:50%;background:#0D2137;color:#E67E22;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">${p.n}</div>
+      <div>
+        <div style="font-size:13px;font-weight:500">${p.t}</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">${p.d}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('errores').innerHTML=ERRORES.map((e,i)=>`
+    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px">
+      <div style="min-width:16px;height:16px;border-radius:50%;background:var(--color-background-danger);color:var(--color-text-danger);font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:500">${i+1}</div>
+      <div style="color:var(--color-text-secondary)">${e}</div>
+    </div>`).join('');
+}
+
+function buildGuias(){
+  const tabs=document.getElementById('guia-tabs');
+  tabs.innerHTML=GUIAS.map((g,i)=>`<button class="guia-tab${i===0?' active':''}" onclick="showGuia(${i},this)" style="${i===0?'border-color:'+g.color:''}">${g.name}</button>`).join('');
+  showGuia(0,tabs.children[0]);
+}
+
+function showGuia(i,btn){
+  document.querySelectorAll('.guia-tab').forEach(b=>{b.classList.remove('active');b.style.borderColor='';});
+  btn.classList.add('active');
+  btn.style.borderColor=GUIAS[i].color;
+  const g=GUIAS[i];
+  document.getElementById('guia-content').innerHTML=`
+    <div class="card" style="border-top:3px solid ${g.color}">
+      <h3 style="color:${g.color}">${g.cap}</h3>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:.75rem">Meta laboral: <strong>${g.meta}</strong></div>
+      ${g.ej.map(e=>`<div class="ejercicio">
+        <div class="ej-title">${e.t}</div>
+        <div class="ej-body">${e.b}</div>
+      </div>`).join('')}
+    </div>`;
+}
+
+function buildGlosario(){
+  renderGlos('');
+}
+
+function renderGlos(q){
+  const list=document.getElementById('glos-list');
+  const f=GLOSARIO.filter(g=>!q||g.t.toLowerCase().includes(q.toLowerCase())||g.d.toLowerCase().includes(q.toLowerCase()));
+  list.innerHTML=f.map((g,i)=>`
+    <div class="glos-item" onclick="toggleGlos(this)">
+      <div class="gi-tipo" style="background:${g.tbc};color:${g.tc}">${g.tipo}</div>
+      <div class="gi-term">${g.t}</div>
+      <div class="gi-def">${g.d}</div>
+    </div>`).join('');
+  if(!f.length) list.innerHTML='<p style="font-size:13px;color:var(--color-text-secondary);text-align:center;padding:2rem">Sin resultados para "'+q+'"</p>';
+}
+
+function filterGlos(q){renderGlos(q);}
+
+function toggleGlos(el){el.classList.toggle('open');}
+
+function buildCompartir(){
+  document.getElementById('share-msgs').innerHTML=SHARE_MSGS.map(m=>`
+    <div class="card" style="margin-bottom:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+        <div style="font-size:13px;font-weight:500">${m.red}</div>
+        <button class="share-btn" style="font-size:11px;padding:4px 10px" onclick="copyMsg('${btoa(encodeURIComponent(m.msg))}')">
+          <i class="ti ti-copy" aria-hidden="true"></i>Copiar
+        </button>
+      </div>
+      <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.5;white-space:pre-wrap">${m.msg}</div>
+    </div>`).join('');
+}
+
+function copyMsg(encoded){
+  const msg=decodeURIComponent(atob(encoded));
+  navigator.clipboard.writeText(msg).catch(()=>{});
+}
+
+const APP_URL='https://claude.ai';
+const SHARE_TEXT='Construir empleos desde la infancia para personas neurodivergentes — Neurodiversidad 2.0 · Uldarico Ramírez Perdomo · #MiHijoPuede';
+
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(SHARE_TEXT+'\n\n'+APP_URL),'_blank');}
+function shareTW(){window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(SHARE_TEXT)+'&url='+encodeURIComponent(APP_URL),'_blank');}
+function shareLI(){window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(APP_URL),'_blank');}
+function shareFB(){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(APP_URL),'_blank');}
+function copyLink(){
+  navigator.clipboard.writeText(APP_URL+' — Construir empleos desde la infancia · #MiHijoPuede').catch(()=>{});
+  const c=document.getElementById('copy-confirm');
+  c.style.display='block';
+  setTimeout(()=>c.style.display='none',3000);
+}
+
+buildCaps();buildEmpleos();buildBiologia();buildModelo();buildGuias();buildGlosario();buildCompartir();
+</script>
